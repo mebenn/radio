@@ -1,18 +1,18 @@
 # Configure file for radio
-# Format: tag:radio streaming details
+# Format: tag;description;radio streaming details
 
 # BBC
-bbc1;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_radio1_q?s=1414316498&e=1414330898&h=6d437b4b969f22e59c2b433b18b20cac
-bbc2;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_radio2_q?s=1414316528&e=1414330928&h=a8716219e8deb33a401d757b2cf964b4
-bbc3;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_radio3_q?s=1414316356&e=1414330756&h=82ba0861fae70e08e0ef88924bc8a18a
-bbc4;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_radio4_q?s=1414316621&e=1414331021&h=42cbff1312a19a223d31f43a2ac0b547
-bbc5;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_5live_q?s=1414316724&e=1414331124&h=857c17c5b02183e34500c218ba6e8723
-bbc6;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_6music_q?s=1414316686&e=1414331086&h=a25fd25331128ef46b15997c4eb21eda
-bbc1_extra;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_1xtra_q?s=1414316868&e=1414331268&h=86ec38b32a900df3deeb9cdee3a67494
-bbc4_extra;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_radio4extra_q?s=1414316937&e=1414331337&h=89b4d1f9d26afd6e72d144b0066d1fcc
+bbc1;BBC1;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_radio1_q?s=1414316498&e=1414330898&h=6d437b4b969f22e59c2b433b18b20cac
+bbc2;BBC2;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_radio2_q?s=1414316528&e=1414330928&h=a8716219e8deb33a401d757b2cf964b4
+bbc3;BBC3;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_radio3_q?s=1414316356&e=1414330756&h=82ba0861fae70e08e0ef88924bc8a18a
+bbc4;BBC4;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_radio4_q?s=1414316621&e=1414331021&h=42cbff1312a19a223d31f43a2ac0b547
+bbc5;BBC5;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_5live_q?s=1414316724&e=1414331124&h=857c17c5b02183e34500c218ba6e8723
+bbc6;BBC6;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_6music_q?s=1414316686&e=1414331086&h=a25fd25331128ef46b15997c4eb21eda
+bbc1_extra;BBC1 Extra;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_1xtra_q?s=1414316868&e=1414331268&h=86ec38b32a900df3deeb9cdee3a67494
+bbc4_extra;BBC4 Extra;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_intl_lc_radio4extra_q?s=1414316937&e=1414331337&h=89b4d1f9d26afd6e72d144b0066d1fcc
 
 # Regional
-yorkshire;http://str1.sad.ukrd.com:80/yorkshirecoastb
-doncaster;http://lincs.planetwideradio.com:8035/traxfm
-lancaster;http://shoutcast2.tidyhosts.com:9006
-cambridge;http://ice-sov.musicradio.com:80/HeartCambridgeMP3
+yorkshire;Yorkshire local radio;http://str1.sad.ukrd.com:80/yorkshirecoastb
+doncaster;Doncaster;http://lincs.planetwideradio.com:8035/traxfm
+lancaster;Lancaster;http://shoutcast2.tidyhosts.com:9006
+cambridge;Cambridge;http://ice-sov.musicradio.com:80/HeartCambridgeMP3

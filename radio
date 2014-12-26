@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 ##############################################################################
 # radio: A simple bash script to listen to radio stations
+#
+# Configureation file
+# .radio is first looked for in the current dir, if not there, then $HOME/.radio
+# is looked for.  If that is not present, the programme exists.
+# Format of .radio
+# tag;description;stream URL
+#
+# Example: 
+# yorkshire;Yorkshire local radio;http://str1.sad.ukrd.com:80/yorkshirecoastb
 #   
 # Copyright (C) 2012-2014  Benny Lyons: benny.lyons@gmx.net
 #
@@ -108,31 +117,34 @@ Create <b>.radio</b> in your home directory"
         if [[ "$GUI" == "true" || "$LIST" == "true"  ]]; then
 		echo "List of all stations provided by " $CONFIG
 		(( i = 0 ))
-		while read line ; do
-        		if [[ ${line:0:1} == "#" ]]; then
+        	while IFS=";" read line1 line2 line3 ; do
+			if [[ ${line1:0:1} == "#" ]]; then
         			continue
-        		elif [[ ${line:0:1} == " " ]]; then
+        		elif [[ ${line1:0:1} == " " ]]; then
         			continue
-        		elif [ -z "$line" ]; then
+        		elif [ -z "$line1" ]; then
         			continue
         		else
-                                a[${i}]=${line%;*}
-				stations=("${stations[@]}" "FALSE" "${line%;*}")
+				station_tag[${i}]=${line1}
+				station_description[${i}]=${line2}
+				station_stream[${i}]=${line3}
+				stations=("${stations[@]}" "FALSE" "${line1}" "${line2}")
 				(( i = i + 1 ))
         		fi
 		done < "${CONFIG}"
+
 		station_list=""
-		#while [ $j -ge 0 ]; do
 		j=0
 		while [ $j -lt $i ]; do
-			station_list+=${NL}${a[${j}]}
+			station_list+=${NL}${station_tag[${j}]}
 			(( j = j + 1 ))
 		done
+
 		if [ "$GUI" == "true" ]; then
 			input_station=$(zenity --list  --radiolist \
                                --height=450\
 			       --text="Select a radio station"\
-			       --column "Select" --column "Station"\
+			       --column "Select" --column "Station" --column "Description"\
                                 "${stations[@]}")
 		else
 			printf "    %s\n" $station_list
@@ -141,13 +153,13 @@ Create <b>.radio</b> in your home directory"
         fi
 
 
-        while read line ; do
-                if [[ ${line:0:1} == "#" ]]; then
+	while IFS=";" read line1 line2 line3 ; do
+                if [[ ${line1:0:1} == "#" ]]; then
         	        continue
-        	elif [[ ${line:0:1} == " " ]]; then
+        	elif [[ ${line1:0:1} == " " ]]; then
         		continue
-        	elif [[ "${line%;*}" == "${input_station}" ]]; then
-        		station=${line##*;}
+        	elif [[ "${line1}" == "${input_station}" ]]; then
+			station=${line3}
         		break
         	fi
         done < "${CONFIG}"
