@@ -1,0 +1,177 @@
+#!/usr/bin/env bash
+##############################################################################
+# radio: A simple bash script to listen to radio stations
+#   
+# Copyright (C) 2012-2014  Benny Lyons: benny.lyons@gmx.net
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+help()
+{
+    cat<<EOF
+    Usage: $0 <options> radio_channel
+
+    Uses .radio to read radio stations.
+    First look for .radio in current dir, then
+    in $HOME, if not present, exits
+
+    OPTIONS
+    -c copy station: Default: radio.mp3 or -o <outputfile>
+    -g GUI Use a graphical user interface (uses Zenity)
+    -h help, this text
+    -l List of all available stations
+    -o <output_file> Copy file to here
+    -s <station> is the name of the station in the config file
+EOF
+}
+
+
+NL=$'\n'
+
+main ()
+{
+        #
+        # Options
+        #
+        while getopts "hcglo:s:" opt; do
+	        case $opt in        
+			h)
+				help
+				exit 0
+				;;
+			c)
+				COPY=true
+				;;
+			g)
+				GUI=true
+				;;
+			l)
+				LIST=true
+				;;
+			o)
+				OUTPUT=$OPTARG
+				;;
+			s)
+				input_station=$OPTARG
+				;;
+			\?)
+				echo "Don't know this option"
+				exit 0
+				;;
+		esac
+	done
+
+	# If no options, then enter GUI
+	if [ $# -eq 0 ]; then
+		GUI=true
+	fi
+
+        # Config file: .radio
+        # First look in current dir, then in $HOME
+        CONFIG_FILE=".radio"
+        if [ -f "${CONFIG_FILE}" ]; then
+		CONFIG=${CONFIG_FILE}
+        elif [ -f "${HOME}/${CONFIG_FILE}" ]; then
+		CONFIG=${HOME}/${CONFIG_FILE}
+        else
+		if [ "$GUI" == "true" ]; then
+			zenity --error --text "ERROR: No configureation file found. 
+Create <b>.radio</b> in your home directory"
+		else
+			echo "ERROR: No configureation file found"
+			echo "       Create .radio in your $HOME dir"
+		fi
+		exit 1
+        fi
+        
+
+
+	if [ "$COPY" == "true" ]; then
+		if [ -z "$OUTPUT" ]; then
+        		OUTPUT="radio.mp3"
+		fi		
+	fi
+
+        
+        if [[ "$GUI" == "true" || "$LIST" == "true"  ]]; then
+		echo "List of all stations provided by " $CONFIG
+		(( i = 0 ))
+		while read line ; do
+        		if [[ ${line:0:1} == "#" ]]; then
+        			continue
+        		elif [[ ${line:0:1} == " " ]]; then
+        			continue
+        		elif [ -z "$line" ]; then
+        			continue
+        		else
+                                a[${i}]=${line%;*}
+				stations=("${stations[@]}" "FALSE" "${line%;*}")
+				(( i = i + 1 ))
+        		fi
+		done < "${CONFIG}"
+		station_list=""
+		#while [ $j -ge 0 ]; do
+		j=0
+		while [ $j -lt $i ]; do
+			station_list+=${NL}${a[${j}]}
+			(( j = j + 1 ))
+		done
+		if [ "$GUI" == "true" ]; then
+			input_station=$(zenity --list  --radiolist \
+                               --height=450\
+			       --text="Select a radio station"\
+			       --column "Select" --column "Station"\
+                                "${stations[@]}")
+		else
+			printf "    %s\n" $station_list
+			exit 0
+		fi
+        fi
+
+
+        while read line ; do
+                if [[ ${line:0:1} == "#" ]]; then
+        	        continue
+        	elif [[ ${line:0:1} == " " ]]; then
+        		continue
+        	elif [[ "${line%;*}" == "${input_station}" ]]; then
+        		station=${line##*;}
+        		break
+        	fi
+        done < "${CONFIG}"
+        
+        if [ -z "$station" ]; then
+		if [ "$GUI" == "true" ]; then
+			zenity --error --text "ERROR: <b>${input_station}</b> station not found in \n\
+                                              ${CONFIG}" 
+		else
+			echo "ERROR: station not found"
+			echo "       Could not find: " $input_station " in " $CONFIG
+		fi
+		exit 1
+        fi
+        
+
+        if [ "$COPY" == "true" ]; then
+		echo ""
+		echo "        OK: recording this session. Output to: " $OUTPUT
+		ffmpeg -i "$station" -acodec copy "$OUTPUT" 
+        else
+		ffplay -x 300 -y 100 -window_title "$input_station" $station &>/dev/null
+        fi
+}
+
+# Execute this script
+main $@
