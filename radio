@@ -142,7 +142,7 @@ Create <b>.radio</b> in your home directory"
 
 		if [ "$GUI" == "true" ]; then
 			input_station=$(zenity --list  --radiolist \
-                               --height=450\
+                               --height=450 --width=450\
 			       --text="Select a radio station"\
 			       --column "Select" --column "Station" --column "Description"\
                                 "${stations[@]}")
@@ -165,13 +165,12 @@ Create <b>.radio</b> in your home directory"
         done < "${CONFIG}"
         
         if [ -z "$station" ]; then
-		if [ "$GUI" == "true" ]; then
-			zenity --error --text "ERROR: <b>${input_station}</b> station not found in \n\
-                                              ${CONFIG}" 
-		else
-			echo "ERROR: station not found"
-			echo "       Could not find: " $input_station " in " $CONFIG
-		fi
+		#if [ "$GUI" == "true" ]; then
+		#	zenity --error --text "ERROR: <b>${input_station}</b> station not found in \n\
+                #                              ${CONFIG}" 
+		#else
+		echo "ERROR: station not found"
+		echo "       Could not find: " $input_station " in " $CONFIG
 		exit 1
         fi
         
