@@ -85,11 +85,12 @@ main ()
 	done
 
 	# Require these programmes to be installed
-	if [ ! -e "ffmpeg" ]; then
-		echo "ERROR: ffmpeg not installed"
-		echo "       Install the ffmpeg package"
+
+        command -v ffmpeg >/dev/null 2>&1 || { 
+                echo "ERROR: ffmpeg not installed" 
+                echo "       Install the ffmpeg package" >&2;
 		exit 1
-	fi
+		}
 
 	# If no options, then enter GUI
 	if [ $# -eq 0 ]; then
