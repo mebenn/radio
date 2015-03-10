@@ -35,6 +35,8 @@ help()
     Uses .radio to read radio stations.
     First look for .radio in current dir, then
     in $HOME, if not present, exits
+    This application uses the ffmpeg package, so please ensure that it is
+    installed before running.
 
     OPTIONS
     -c copy station: Default: radio.mp3 or -o <outputfile>
@@ -81,6 +83,13 @@ main ()
 				;;
 		esac
 	done
+
+	# Require these programmes to be installed
+	if [ ! -e "ffmpeg" ]; then
+		echo "ERROR: ffmpeg not installed"
+		echo "       Install the ffmpeg package"
+		exit 1
+	fi
 
 	# If no options, then enter GUI
 	if [ $# -eq 0 ]; then
