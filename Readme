@@ -1,0 +1,74 @@
+radio is a simple programme allowing the user to listen to radio stations. 
+Information about the station is stored in a simple configuration file.
+
+'Simple' implies that the application is easy to use, add new stations and
+places low (simple) demands on hardware. 
+
+
+Installation & Requirements
+===========================
+Requirements
+As this is a Bash applcation, it will run on operating system where Bash is running. 
+
+The ffmpeg package must be installed before you can use radio: https://www.ffmpeg.org/
+There should be a package of ffmpeg available for your distro, although recent
+releases of Debian seems to have (temproarily?) removed ffmpeg. 
+
+Installation
+Place the radio Bash in a directory that is listed in your PATH environment
+variable (e.g., /usr/local/bin; or $HOME/bin), ensure that execute permissions
+have been appropriatly set (chmod u+x reaio) 
+
+Using
+=====
+To get help:
+        radio -h
+
+There are two modes of operation:
+        ---graphical user interface
+        ---command line 
+
+Simply entering radio without any options will start the GUI. Select a station
+with the mouse and the station should begin playing.
+
+Supplying options on the command line will ewnter command line mode (except for
+the -g option).  To select a station, use the -s option.
+
+
+Configuration
+=============
+Configure stations.  Use the configuration file supplied with this Readme as a
+starting template and add your own radio stations.  
+
+The configuration file is named .radio and is first looked for in the current
+directory, if not present, then $HOME/.radio is used.
+
+A line begining with a '#' is treated a a comment and ignored.
+Each line consist of three columns seperated by a ';'.
+The first column is a tag which is supplied to the -s to start the station.  The
+second column is a tag displayed in the GUI.  The thir column is the stream
+address of the radio station.
+
+Example $HOME/.radio
+bbc1;BBC1;http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p?s=1424601331&e=1424615731&h=e3b4297ec84e3aebe958b1787359dcff
+
+To listen to BBC1, 
+    radio -s bbc1
+
+
+Legal
+=====
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
+This file is part of radio.
+
+radio is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation; either version 3 of the License, or (at your option) any later
+version.
+
+radio is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses/>.
